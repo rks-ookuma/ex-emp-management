@@ -70,9 +70,9 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr th:each=" employee : ${application.employeeList}">
+		<tr th:each=" employee,status : ${application.employeeList}">
 			<td>
-				<a href="detail.html" th:href="@{/employee/toDetail}+'?id='+${employee.id}">
+				<a href="detail.html" th:href="@{/employee/toDetail}+'?index='+${status.index}">
 					<span th:text="${employee.name}">山田太郎</span>
 				</a>
 			</td>

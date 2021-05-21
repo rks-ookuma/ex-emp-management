@@ -30,4 +30,14 @@ public class EmployeeService {
 		List<Employee> employeeList = repository.findAll();
 		return employeeList;
 	}
+
+	/**
+	 * 扶養人数を更新する.
+	 * 
+	 * @param employee 更新したい従業員ドメイン
+	 * @return 更新された従業員ドメイン
+	 */
+	public Employee dependentsCountUpdate(Employee employee) {
+		return repository.update(employee);
+	}
 }
