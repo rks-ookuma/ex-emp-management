@@ -9,14 +9,23 @@ import org.springframework.stereotype.Repository;
 
 import jp.co.sample.domain.Employee;
 
+/**
+ * 従業員テーブルを操作するリポジトリ
+ * 
+ * @author takahiro.okuma
+ *
+ */
 @Repository
 public class EmployeeRepository {
 
+	/** SQLの発行に使用するテンプレート */
 	@Autowired
 	private NamedParameterJdbcTemplate template;
 
-	private static final String TABLE_EMPLOYEE = "employees";
+	/** 従業員テーブル名 */
+	private static final String TABLE_EMPLOYEES = "employees";
 
+	/** 管理者テーブルの情報をドメインに変換するROW_MAPPER */
 	private RowMapper<Employee> EMPLOYEE_ROW_MAPPER = (rs, i) -> {
 		Employee employee = new Employee();
 		employee.setId(rs.getInt("id"));

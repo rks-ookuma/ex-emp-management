@@ -15,6 +15,7 @@ import jp.co.sample.repository.AdministractorRepository;
 @Service
 public class AdministratorService {
 
+	/** 管理者テーブルを操作するリポジトリ */
 	@Autowired
 	private AdministractorRepository repository;
 
@@ -27,6 +28,18 @@ public class AdministratorService {
 	public Administractor registerAdmin(Administractor administractor) {
 		Administractor administractorInId = repository.save(administractor);
 		return administractorInId;
+	}
+
+	/**
+	 * ログイン処理を行う
+	 * 
+	 * @param inMailAddress ログインしたいアカウントのメールアドレス
+	 * @param inPassword    ログインしたいアカウントのパスワード
+	 * @return DBに存在していればそのアカウント情報、存在していなければnull
+	 */
+	public Administractor loginAdmin(String inMailAddress, String inPassword) {
+		Administractor administractor = repository.searchAcount(inMailAddress, inPassword);
+		return administractor;
 	}
 
 }

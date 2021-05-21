@@ -3,6 +3,7 @@ package jp.co.sample.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -11,14 +12,21 @@ import org.springframework.stereotype.Repository;
 
 import jp.co.sample.domain.Administractor;
 
+/**
+ * 管理者テーブルを操作するリポジトリ.
+ * 
+ * @author takahiro.okuma
+ *
+ */
 @Repository
 public class AdministractorRepository {
 
+	/** SQLの発行に使用するテンプレート */
 	@Autowired
 	private NamedParameterJdbcTemplate template;
 
 	/** 管理者テーブル名 */
-	private static final String TABLE_ADMINISTRACTOR = "administrators";
+	private static final String TABLE_ADMINISTRACTORS = "administrators";
 
 	/** 管理者テーブルの情報をドメインに変換するROW_MAPPER */
 	private RowMapper<Administractor> ADMINISTRACTOR_ROW_MAPPER = (rs, i) -> {
@@ -40,7 +48,7 @@ public class AdministractorRepository {
 	 */
 	public Administractor save(Administractor administractor) {
 
-		String sql = "INSERT INTO " + TABLE_ADMINISTRACTOR + " (name,mail_address,password) "
+		String sql = "INSERT INTO " + TABLE_ADMINISTRACTORS + " (name,mail_address,password) "
 				+ " VALUES (:name,:mailAddress,:password);";
 		SqlParameterSource param = new BeanPropertySqlParameterSource(administractor);
 		KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -49,6 +57,30 @@ public class AdministractorRepository {
 		administractor.setId(keyHolder.getKey().intValue());
 
 		return administractor;
+
+	}
+
+	/**
+	 * 入力されたメールアドレスとパスワードがDBに存在するか確認する.
+	 * 
+	 * @param inMailAddress 入力されたメールアドレス
+	 * @param inPassword    入力されたパスワード
+	 * @return 存在すればそのアカウント情報、存在しなければnull
+	 */
+	public Administractor searchAcount(String inMailAddress, String inPassword) {
+
+		String sql = "SELECT id,name,mail_address,password FROM " + TABLE_ADMINISTRACTORS
+				+ " WHERE mail_address=:mailAddress AND password=:password;";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("mailAddress", inMailAddress)
+				.addValue("password", inPassword);
+
+		try {
+			Administractor administractor = template.queryForObject(sql, param, ADMINISTRACTOR_ROW_MAPPER);
+			return administractor;
+
+		} catch (Exception e) {
+			return null;
+		}
 
 	}
 
