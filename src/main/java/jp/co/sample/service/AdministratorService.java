@@ -38,7 +38,7 @@ public class AdministratorService {
 	 * @return DBに存在していればそのアカウント情報、存在していなければnull
 	 */
 	public Administractor loginAdmin(String inMailAddress, String inPassword) {
-		Administractor administractor = repository.searchAcount(inMailAddress, inPassword);
+		Administractor administractor = repository.findByNameAndPassword(inMailAddress, inPassword);
 		return administractor;
 	}
 

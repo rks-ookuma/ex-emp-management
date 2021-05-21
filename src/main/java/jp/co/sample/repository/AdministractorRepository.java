@@ -61,18 +61,18 @@ public class AdministractorRepository {
 	}
 
 	/**
-	 * 入力されたメールアドレスとパスワードがDBに存在するか確認する.
+	 * メールアドレスとパスワードがDBに存在するか確認する.
 	 * 
-	 * @param inMailAddress 入力されたメールアドレス
-	 * @param inPassword    入力されたパスワード
+	 * @param inMailAddress メールアドレス
+	 * @param inPassword    パスワード
 	 * @return 存在すればそのアカウント情報、存在しなければnull
 	 */
-	public Administractor searchAcount(String inMailAddress, String inPassword) {
+	public Administractor findByNameAndPassword(String mailAddress, String password) {
 
 		String sql = "SELECT id,name,mail_address,password FROM " + TABLE_ADMINISTRACTORS
 				+ " WHERE mail_address=:mailAddress AND password=:password;";
-		SqlParameterSource param = new MapSqlParameterSource().addValue("mailAddress", inMailAddress)
-				.addValue("password", inPassword);
+		SqlParameterSource param = new MapSqlParameterSource().addValue("mailAddress", mailAddress).addValue("password",
+				password);
 
 		try {
 			Administractor administractor = template.queryForObject(sql, param, ADMINISTRACTOR_ROW_MAPPER);

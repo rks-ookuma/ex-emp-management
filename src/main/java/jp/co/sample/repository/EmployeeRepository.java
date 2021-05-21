@@ -1,6 +1,6 @@
 package jp.co.sample.repository;
 
-import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
@@ -31,9 +31,9 @@ public class EmployeeRepository {
 		employee.setId(rs.getInt("id"));
 		employee.setName(rs.getString("name"));
 		employee.setImage(rs.getString("image"));
-		employee.setGender(rs.getString(rs.getString("gender")));
+		employee.setGender(rs.getString("gender"));
 		// FIXME:もしかしたら日時を変換できていないかも
-		employee.setHireDate(LocalDate.parse(rs.getString("hire_date")));
+		employee.setHireDate(rs.getDate("hire_date").toLocalDate());
 		employee.setMailAddress(rs.getString("mail_address"));
 		employee.setZipCode(rs.getString("zip_code"));
 		employee.setAddress(rs.getString("address"));
@@ -44,5 +44,17 @@ public class EmployeeRepository {
 
 		return employee;
 	};
+
+	/**
+	 * 従業員データを全件検索する.
+	 * 
+	 * @return 全従業員のドメインのリスト
+	 */
+	public List<Employee> findAll() {
+		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count"
+				+ " FROM " + TABLE_EMPLOYEES + " ORDER bY id;";
+		List<Employee> employeeList = template.query(sql, EMPLOYEE_ROW_MAPPER);
+		return employeeList;
+	}
 
 }

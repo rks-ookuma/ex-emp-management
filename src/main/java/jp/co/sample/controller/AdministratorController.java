@@ -42,14 +42,14 @@ public class AdministratorController {
 	/**
 	 * ログインフォームの値の保持.
 	 * 
-	 * @return
+	 * @return ログインフォーム
 	 */
 	@ModelAttribute
 	public LoginForm setUpLoginForm() {
 		return new LoginForm();
 	}
 
-	/** 管理者関連機能の業務処理を行うクラス. */
+	/** 管理者関連機能の業務処理を行うクラス */
 	@Autowired
 	private AdministratorService service;
 
@@ -119,7 +119,10 @@ public class AdministratorController {
 		}
 
 		session.setAttribute("loginAcount", administractor);
-		return "employee/list";
+		session.setAttribute("administratorName", administractor.getName());
+
+		return "forward:/employee";
+
 	}
 
 }

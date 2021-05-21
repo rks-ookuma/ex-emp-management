@@ -3,7 +3,7 @@ package jp.co.sample.form;
 import javax.validation.constraints.NotBlank;
 
 /**
- * 管理者登録時に使用するフォーム
+ * 管理者登録時に使用するフォーム.
  * 
  * @author takahiro.okuma
  *
