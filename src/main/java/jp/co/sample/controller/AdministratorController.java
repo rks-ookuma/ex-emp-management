@@ -90,7 +90,6 @@ public class AdministratorController {
 		Administractor administractor = new Administractor();
 		BeanUtils.copyProperties(insertAdministratorForm, administractor);
 		administractor = service.registerAdmin(administractor);
-		System.out.println(administractor);
 
 		return "administrator/login";
 	}
@@ -123,6 +122,17 @@ public class AdministratorController {
 
 		return "forward:/employee";
 
+	}
+
+	/**
+	 * 管理者アカウントをセッションから削除する（ログアウト）
+	 * 
+	 * @return ログイン画面
+	 */
+	@RequestMapping("/logoutAdmin")
+	public String logoutAdmin() {
+		session.removeAttribute("loginAcount");
+		return "forward:/admin";
 	}
 
 }

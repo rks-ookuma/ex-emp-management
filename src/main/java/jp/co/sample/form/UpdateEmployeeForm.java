@@ -12,19 +12,9 @@ public class UpdateEmployeeForm {
 
 	/** 更新する従業員のID */
 	private Integer id;
-	/** 従業員一覧における現在表示している従業員の順番 */
-	private Integer index;
 	/** 更新したい扶養人数 */
 	@NotNull(message = "扶養人数を入力してください")
 	private Integer dependentsCount;
-
-	public Integer getIndex() {
-		return index;
-	}
-
-	public void setIndex(Integer index) {
-		this.index = index;
-	}
 
 	public Integer getId() {
 		return id;
@@ -44,6 +34,6 @@ public class UpdateEmployeeForm {
 
 	@Override
 	public String toString() {
-		return "UpdateEmployeeForm [id=" + id + ", index=" + index + ", dependentsCount=" + dependentsCount + "]";
+		return "UpdateEmployeeForm [id=" + id + ", dependentsCount=" + dependentsCount + "]";
 	}
 }

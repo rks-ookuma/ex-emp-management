@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
@@ -45,6 +46,20 @@ public class EmployeeRepository {
 
 		return employee;
 	};
+
+	/**
+	 * idによって従業員をひとりだけ取得する.
+	 * 
+	 * @param id 取得したい従業員のＩＤ
+	 * @return 指定したＩＤの従業員ドメイン
+	 */
+	public Employee load(int id) {
+		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM "
+				+ TABLE_EMPLOYEES + " WHERE id=:id";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
+		Employee employee = template.queryForObject(sql, param, EMPLOYEE_ROW_MAPPER);
+		return employee;
+	}
 
 	/**
 	 * 従業員データを全件検索する.

@@ -22,6 +22,16 @@ public class EmployeeService {
 	private EmployeeRepository repository;
 
 	/**
+	 * IDによって従業員を1件取得する.
+	 * 
+	 * @param id 取得したい従業員のID
+	 * @return 指定されたIDの従業員ドメイン
+	 */
+	public Employee getEmployeeById(int id) {
+		return repository.load(id);
+	}
+
+	/**
 	 * 従業員の情報を全部取得する.
 	 * 
 	 * @return 全従業員のドメインのリスト
