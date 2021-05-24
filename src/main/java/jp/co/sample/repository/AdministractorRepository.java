@@ -84,4 +84,19 @@ public class AdministractorRepository {
 
 	}
 
+	/**
+	 * 管理者情報を更新する.
+	 * 
+	 * @param administractor 更新したい管理者ドメイン
+	 * @return 更新された管理者ドメイン
+	 */
+	public Administractor update(Administractor administractor) {
+		SqlParameterSource param = new BeanPropertySqlParameterSource(administractor);
+		String sql = "UPDATE " + TABLE_ADMINISTRACTORS
+				+ " SET name=:name,mail_address=:mailAddress,password=:password WHERE id=:id;";
+		template.update(sql, param);
+		return administractor;
+
+	}
+
 }

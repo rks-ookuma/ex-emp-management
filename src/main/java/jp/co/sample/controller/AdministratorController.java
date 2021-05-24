@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jp.co.sample.domain.Administractor;
 import jp.co.sample.form.InsertAdministratorForm;
 import jp.co.sample.form.LoginForm;
+import jp.co.sample.form.UpdateAdminForm;
 import jp.co.sample.service.AdministratorService;
 
 /**
@@ -37,6 +38,11 @@ public class AdministratorController {
 	@ModelAttribute
 	public InsertAdministratorForm setUpInsertAdministratorForm() {
 		return new InsertAdministratorForm();
+	}
+
+	@ModelAttribute
+	public UpdateAdminForm setUpUpdateAdminForm() {
+		return new UpdateAdminForm();
 	}
 
 	/**
@@ -133,6 +139,58 @@ public class AdministratorController {
 	public String logoutAdmin() {
 		session.removeAttribute("loginAcount");
 		return "forward:/admin";
+	}
+
+	/**
+	 * 管理者情報の編集画面に遷移する.
+	 * 
+	 * @param model リクエストスコープ
+	 * @return 管理者情報の編集画面
+	 */
+	@RequestMapping("/toAdminEdit")
+	public String toAdminEdit(Model model) {
+		UpdateAdminForm updateAdminForm = new UpdateAdminForm();
+		Administractor administractor = (Administractor) session.getAttribute("loginAcount");
+		updateAdminForm.setId(administractor.getId());
+		updateAdminForm.setName(administractor.getName());
+		updateAdminForm.setMailAddress(administractor.getMailAddress());
+		model.addAttribute("updateAdminForm", updateAdminForm);
+		return "employee/adminEdit";
+	}
+
+	/**
+	 * 管理者情報を更新する.
+	 * 
+	 * @param updateAdminForm 管理者情報の更新の際に利用するフォーム
+	 * @param result          入力値チェックのエラー群
+	 * @param model           リクエストスコープ
+	 * @return 失敗すれば管理者編集画面、成功すれば従業員一覧画面
+	 */
+	@RequestMapping("/updateAdmin")
+	public String updateAdmin(@Validated UpdateAdminForm updateAdminForm, BindingResult result, Model model) {
+		if (result.hasErrors()) {
+			return "employee/adminEdit";
+		}
+		Administractor nowAdministractor = (Administractor) session.getAttribute("loginAcount");
+		if (!nowAdministractor.getPassword().equals(updateAdminForm.getPastPassword())) {
+			model.addAttribute("failure", "パスワードが間違っています");
+			return "employee/adminEdit";
+		}
+		if (!updateAdminForm.getUpdatePassword().equals(updateAdminForm.getCheckUpdatePassword())) {
+			model.addAttribute("checkFailure", "確認用パスワードと一致しませんでした");
+			return "employee/adminEdit";
+		}
+
+		Administractor administractor = new Administractor();
+		administractor.setId(updateAdminForm.getId());
+		administractor.setName(updateAdminForm.getName());
+		administractor.setMailAddress(updateAdminForm.getMailAddress());
+		administractor.setPassword(updateAdminForm.getUpdatePassword());
+		service.update(administractor);
+
+		session.setAttribute("loginAcount", administractor);
+
+		return "redirect:/employee";
 	}
 
 }

@@ -26,7 +26,7 @@
 						<li class="active"><a href="list.html" th:href="@{/employee}">従業員管理</a></li>
 					</ul>
 					<p class="navbar-text navbar-right">
-						<span th:text="${session.administratorName + 'さん'}">山田さん</span>こんにちは！
+						<a href="adminEdit.html" th:href="@{/admin/toAdminEdit}"><span th:text="${session.administratorName + 'さん'}">山田さん</span></a>こんにちは！
 						&nbsp;&nbsp;&nbsp;
 						<a href="../administrator/login.html" class="navbar-link" th:href="@{/admin/logoutAdmin}">ログアウト</a>
 					</p>
@@ -52,14 +52,14 @@
 <!-- ここから上を編集する必要はありません -->
 
 <!-- ここにモックのform要素を貼り付けます -->
-<form method="post" action="detail.html" th:action="@{/employee/updateEmployeeInfo}" th:object="${updateEmployeeForm}">
-	<input type="hidden" name="id" th:value="*{id}" th:field="*{id}">
+<form method="post" action="detail.html" th:action="@{/admin/updateAdmin}" th:object="${updateAdminForm}">
+    <input type="hidden" name="id" th:value="*{id}">
 	<fieldset>
-		<legend>従業員情報</legend>
+		<legend>管理者情報</legend>
 		<table class="table table-striped">
 		  <tr>
 			<th nowrap>
-			  従業員名
+			  管理者名
 			</th>
 			<td>
 				<label class="error-messages">
@@ -71,134 +71,56 @@
 		  </tr>
 		  <tr>
 			<th nowrap>
-			  写真
-			</th>
-			<td>
-			  <img src="../../static/img/e2.png" th:src="@{/img/}+*{image}"><br>
-			  <label class="error-messages">
-				<span th:errors="*{image}">画像を選択してください</span>
-			</label>
-			<label class="control-label" style="color: red" for="image"></label>
-			<br>
-			<select name="image" id="image">
-				<option value="e1.png" th:field="*{image}">e1.png</option>
-				<option value="e2.png" th:field="*{image}">e2.png</option>
-			</select>
-			</td>
-		  </tr>
-		  <tr>
-			<th nowrap>
-			  性別
-			</th>
-			<td>
-				<label class="error-messages">
-					<span th:errors="*{gender}">性別を選択してください</span>
-				</label>
-				<label class="control-label" style="color: red" for="gender"></label>
-				<br>
-				<input type="radio" name="gender" id="manField" th:field="*{gender}" value="男性"><label for="manField">男性</label>
-				<input type="radio" name="gender" id="womanField" th:field="*{gender}" value="女性"><label for="womanField">女性</label>
-
-			</td>
-		  </tr>
-		  <tr>
-			<th nowrap>
-			  入社日
-			</th>
-			<td>
-				<label class="error-messages">
-					<span th:errors="*{hireDate}">入社日を選択してください</span>
-				</label>
-				<label class="control-label" style="color: red" for="hireDate"></label>
-				<input type="date" name="hireDate" id="hireDate" class="form-control"
-				 th:value="*{hireDate}" value="2012-11-29">
-			</td>
-		  </tr>
-		  <tr>
-			<th nowrap>
 			  メールアドレス
 			</th>
 			<td>
 				<label class="error-messages">
-					<span th:errors="*{mailAddress}">名前を入力してください</span>
+					<span th:errors="*{mailAddress}">メールアドレスを入力してください</span>
 				</label>
 				<label class="control-label" style="color: red" for="mailAddress"></label>
-				<input type="text" name="mailAddress" th:field="*{mailAddress}" id="mailAddress" class="form-control" value="yamada@sample.com">
+				<input type="text" name="mailAddress" th:value="*{mailAddress}" id="mailAddress" class="form-control" value="yamada@sample.com">
 			</td>
 		  </tr>
 		  <tr>
 			<th nowrap>
-			  郵便番号
-			</th>
-			<td>
-				<label class="error-messages" th:errors="*{zipCode}">
-					<span th:errors="*{zipCode}">郵便番号を入力してください</span>
-				</label>
-				<label class="control-label" style="color: red" for="zipCode"></label>
-				<input type="text" name="zipCode" th:field="*{zipCode}" id="zipCode" class="form-control" value="111-1111">
-			</td>
-		  </tr>
-		  <tr>
-			<th nowrap>
-			  住所
+                現在のパスワード
 			</th>
 			<td>
 				<label class="error-messages">
-					<span th:errors="*{address}">住所を入力してください</span>
+					<span th:errors="*{pastPassword}">パスワードを入力してください</span>
+                    <span th:if="${failure}" th:text="${failure}">パスワードが違います</span>
 				</label>
-				<label class="control-label" style="color: red" for="address"></label>
-				<input type="text" name="address" th:field="*{address}" id="address" class="form-control" value="東京都新宿区1-1-1">
+				<label class="control-label" style="color: red" for="pastPassword"></label>
+				<input type="password" name="pastPassword" th:value="*{pastPassword}" id="pastPassword" class="form-control">
 			</td>
 		  </tr>
 		  <tr>
 			<th nowrap>
-			  電話番号
+			  変更後のパスワード
 			</th>
 			<td>
 				<label class="error-messages">
-					<span th:errors="*{telephone}">電話番号を入力してください</span>
+					<span th:errors="*{updatePassword}">変更後のパスワードを入力してください</span>
+                    <span th:if="${checkFailure}" th:text="${checkFailure}">確認用パスワードと一致しませんでした</span>
 				</label>
-				<label class="control-label" style="color: red" for="telephone"></label>
-				<input type="text" name="telephone" th:field="*{telephone}" id="telephone" class="form-control" value="090-0000-0000" pattern="\d{2,4}-?\d{2,4}-?\d{3,4}">
+				<label class="control-label" style="color: red" for="updatePassword"></label>
+				<input type="password" name="updatePassword" th:field="*{updatePassword}" id="updatePassword" class="form-control">
 			</td>
 		  </tr>
 		  <tr>
 			<th nowrap>
-			  給料
+			  変更後のパスワード<br>
+              (確認用)
 			</th>
 			<td>
 				<label class="error-messages">
-					<span th:errors="*{salary}">給料を入力してください</span>
+					<span th:errors="*{checkUpdatePassword}">変更後のパスワードをもう一度入力してください</span>
 				</label>
-				<label class="control-label" style="color: red" for="name"></label>
-				<input type="number" name="salary" th:field="*{salary}" id="salary" class="form-control" value="400000">
+				<label class="control-label" style="color: red" for="checkUpdatePassword"></label>
+				<input type="password" name="checkUpdatePassword" th:field="*{checkUpdatePassword}" id="checkUpdatePassword" class="form-control">
 			</td>
 		  </tr>
-		  <tr>
-			<th nowrap>
-			  特性
-			</th>
-			<td>
-				<label class="error-messages">
-					<span th:errors="*{characteristics}">特性を入力してください</span>
-				</label>
-				<label class="control-label" style="color: red" for="name"></label>
-				<textarea name="characteristics" id="characteristics" cols="30" rows="5" th:field="*{characteristics}" class="form-control">明るく素直な性格です。リーダーシップを発揮します。新卒社員研修の時はグループ開発の時にリーダーを買ってでました。積極性も人間性も抜群です。周りに対する不満も聞いたことがありません。
-				</textarea>
-			</td>
-		  </tr>
-		  <tr>
-			<th nowrap>
-			  扶養人数
-			</th>
-			<td>
-				<label class="error-messages">
-					<span th:errors="*{dependentsCount}">扶養人数を入力してください</span>
-				</label>
-				<label class="control-label" style="color: red" for="dependentsCount"></label>
-				<input type="number" name="dependentsCount" th:field="*{dependentsCount}" id="dependentsCount" class="form-control" value="3">
-			</td>
-		  </tr>
+		  
 		</table>
 		<button type="submit" class="btn btn-primary">更新</button>
 	</fieldset>
