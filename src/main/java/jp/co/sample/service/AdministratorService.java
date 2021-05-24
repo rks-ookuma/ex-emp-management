@@ -31,7 +31,7 @@ public class AdministratorService {
 	}
 
 	/**
-	 * ログイン処理を行う
+	 * ログイン処理を行う.
 	 * 
 	 * @param inMailAddress ログインしたいアカウントのメールアドレス
 	 * @param inPassword    ログインしたいアカウントのパスワード

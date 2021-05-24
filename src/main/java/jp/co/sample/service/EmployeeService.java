@@ -47,7 +47,7 @@ public class EmployeeService {
 	 * @param employee 更新したい従業員ドメイン
 	 * @return 更新された従業員ドメイン
 	 */
-	public Employee dependentsCountUpdate(Employee employee) {
+	public Employee updateEmployee(Employee employee) {
 		return repository.update(employee);
 	}
 }

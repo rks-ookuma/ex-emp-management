@@ -1,9 +1,9 @@
 package jp.co.sample.controller;
 
+import java.sql.Date;
 import java.util.List;
 
-import javax.servlet.ServletContext;
-
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,13 +29,13 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService service;
 
-	@Autowired
-	private ServletContext application;
-
 	@ModelAttribute
 	public UpdateEmployeeForm setUpUpdateEmployeeForm() {
 		return new UpdateEmployeeForm();
 	}
+
+	// TOD: アプリケーションスコープを使わずリクエストスコープを用いる ⇒DBがアプリケーションスコープの代わりになるから
+	// TOD: リクエストスコープにフォームオブジェクトを格納し詳細画面を表示する
 
 	/**
 	 * 従業員一覧を表示させる.
@@ -43,10 +43,10 @@ public class EmployeeController {
 	 * @return 従業員一覧画面
 	 */
 	@RequestMapping("")
-	public String index() {
+	public String index(Model model) {
 
 		List<Employee> employeeList = service.getAllEmployee();
-		application.setAttribute("employeeList", employeeList);
+		model.addAttribute("employeeList", employeeList);
 		return "employee/list";
 	}
 
@@ -58,14 +58,23 @@ public class EmployeeController {
 	 * @return 詳細画面
 	 */
 	@RequestMapping("/toDetail")
-	public String toDetail(int index, Model model) {
-		System.out.println("index: " + index);
-		@SuppressWarnings("unchecked")
-		List<Employee> employeeList = (List<Employee>) application.getAttribute("employeeList");
-		Employee employee = employeeList.get(index);
+	public String toDetail(int id, Model model) {
+		Employee employee = service.getEmployeeById(id);
 		model.addAttribute("employee", employee);
 		System.out.println("[Fn:toDetail]" + employee);
 		return "employee/detail";
+	}
+
+	@RequestMapping("/toEdit")
+	public String toEdit(int id, Model model) {
+		Employee employee = service.getEmployeeById(id);
+		UpdateEmployeeForm updateEmployeeForm = new UpdateEmployeeForm();
+		BeanUtils.copyProperties(employee, updateEmployeeForm);
+		updateEmployeeForm.setHireDate(Date.valueOf(employee.getHireDate()));
+		System.out.println(updateEmployeeForm.getHireDate());
+		model.addAttribute("updateEmployeeForm", updateEmployeeForm);
+
+		return "employee/edit";
 	}
 
 	/**
@@ -82,29 +91,15 @@ public class EmployeeController {
 		System.out.println(updateEmployeeForm);
 
 		if (result.hasErrors()) {
-			Employee employee = service.getEmployeeById(updateEmployeeForm.getId());
-			model.addAttribute("employee", employee);
-			model.addAttribute("error", "扶養人数を入力してください");
-			return "employee/detail";
+			System.out.println(updateEmployeeForm.getHireDate());
+			return "employee/edit";
 		}
 
-		// 案⓵：リストをViewから取得してきてループさせて従業員を取得する
-//		@SuppressWarnings("unchecked")
-//		List<Employee> employeeList = (List<Employee>) application.getAttribute("employeeList");
-//
-//		for (Employee employee : employeeList) {
-//			if (employee.getId() == updateEmployeeForm.getId()) {
-//				employee.setDependentsCount(updateEmployeeForm.getDependentsCount());
-//				service.dependentsCountUpdate(employee);
-//				break;
-//			}
-//		}
-
-		// 案②：DBに接続して従業員を取得してくる⇒DBに接続する方がパフォーマンスが悪いのか？ループさせるほうがパフォーマンスが悪いのか？
 		Employee employee = service.getEmployeeById(updateEmployeeForm.getId());
-		employee.setDependentsCount(updateEmployeeForm.getDependentsCount());
-		service.dependentsCountUpdate(employee);
+		BeanUtils.copyProperties(updateEmployeeForm, employee);
+		employee.setHireDate(updateEmployeeForm.getHireDate().toLocalDate());
+		service.updateEmployee(employee);
 
-		return index();
+		return index(model);
 	}
 }

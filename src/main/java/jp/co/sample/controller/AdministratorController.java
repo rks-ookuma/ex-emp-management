@@ -125,7 +125,7 @@ public class AdministratorController {
 	}
 
 	/**
-	 * 管理者アカウントをセッションから削除する（ログアウト）
+	 * 管理者アカウントをセッションから削除する（ログアウト）.
 	 * 
 	 * @return ログイン画面
 	 */

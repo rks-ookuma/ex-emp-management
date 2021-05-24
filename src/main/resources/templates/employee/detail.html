@@ -65,7 +65,6 @@
 <!-- ここから上を編集する必要はありません -->
 
 <!-- ここにモックのform要素を貼り付けます -->
-<form method="post" action="list.html" th:action="@{/employee/updateEmployeeInfo}" th:object="${updateEmployeeForm}">
 	<fieldset>
 		<legend>従業員情報</legend>
 		<table class="table table-striped" th:object="${employee}">
@@ -82,7 +81,7 @@
 			  写真
 			</th>
 			<td>
-			  <img src="../../static/img/e2.png" th:src="@{/img/}+${employee.image}">
+			  <img src="../../static/img/e2.png" th:src="@{/img/}+*{image}">
 			</td>
 		  </tr>
 		  <tr>
@@ -154,19 +153,12 @@
 			  扶養人数
 			</th>
 			<td>
-				<label class="error-messages">
-					<span th:if="${error}" th:text="${error}">扶養人数を入力してください</span>
-				</label>
-				<label class="control-label" style="color: red" for="dependentsCount"></label>
-				<input type="hidden" name="id" th:value="*{id}" th:field="*{id}">
-				<input type="number" name="dependentsCount" th:field="*{dependentsCount}" id="dependentsCount" 
-				class="form-control" value="3" th:value="${dependentsCount}">
+				<span th:text="*{dependentsCount}">3</span>
 			</td>
 		  </tr>
 		</table>
-		<button type="submit" class="btn btn-primary">更新</button>
+		<a href="edit.html" th:href="@{/employee/toEdit}+'?id='+${employee.id}" class="btn btn-primary">編集する</a>
 	</fieldset>
-</form>
 
 					
 <!-- ここから下を編集する必要はありません -->
