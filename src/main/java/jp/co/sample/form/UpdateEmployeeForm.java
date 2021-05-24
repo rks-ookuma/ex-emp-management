@@ -1,10 +1,9 @@
 package jp.co.sample.form;
 
-import java.sql.Date;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 /**
  * 従業員更新時に使用するフォーム.
@@ -26,9 +25,8 @@ public class UpdateEmployeeForm {
 	@NotEmpty(message = "性別を選択してください")
 	private String gender;
 	/** 更新したい入社日 */
-	@NotNull(message = "入社日を選択してください")
-	// FIXME: String で受け取るようにする
-	private Date hireDate;
+	@Pattern(regexp = "^[0-9]{4}-[0-9]{2}-[0-9]{2}", message = "入社日を選択してください")
+	private String hireDate;
 	/** 更新したいメールアドレス */
 	@NotBlank(message = "メールアドレスを入力してください")
 	private String mailAddress;
@@ -99,11 +97,11 @@ public class UpdateEmployeeForm {
 		this.gender = gender;
 	}
 
-	public Date getHireDate() {
+	public String getHireDate() {
 		return hireDate;
 	}
 
-	public void setHireDate(Date hireDate) {
+	public void setHireDate(String hireDate) {
 		this.hireDate = hireDate;
 	}
 

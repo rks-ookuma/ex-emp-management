@@ -1,5 +1,6 @@
 package jp.co.sample.form;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 /**
@@ -16,6 +17,7 @@ public class InsertAdministratorForm {
 
 	/** 登録したい入力されたメールアドレス */
 	@NotBlank(message = "メールアドレスを入力してください")
+	@Email(message = "Emailの形式が不正です")
 	private String mailAddress;
 
 	/** 登録したい入力されたパスワード */

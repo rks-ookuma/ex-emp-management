@@ -1,6 +1,7 @@
 package jp.co.sample.controller;
 
-import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -70,7 +71,8 @@ public class EmployeeController {
 		Employee employee = service.getEmployeeById(id);
 		UpdateEmployeeForm updateEmployeeForm = new UpdateEmployeeForm();
 		BeanUtils.copyProperties(employee, updateEmployeeForm);
-		updateEmployeeForm.setHireDate(Date.valueOf(employee.getHireDate()));
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		updateEmployeeForm.setHireDate(employee.getHireDate().format(formatter));
 		System.out.println(updateEmployeeForm.getHireDate());
 		model.addAttribute("updateEmployeeForm", updateEmployeeForm);
 
@@ -91,13 +93,14 @@ public class EmployeeController {
 		System.out.println(updateEmployeeForm);
 
 		if (result.hasErrors()) {
-			System.out.println(updateEmployeeForm.getHireDate());
+			System.out.println("[入力値チェック]" + updateEmployeeForm.getHireDate());
 			return "employee/edit";
 		}
 
 		Employee employee = service.getEmployeeById(updateEmployeeForm.getId());
 		BeanUtils.copyProperties(updateEmployeeForm, employee);
-		employee.setHireDate(updateEmployeeForm.getHireDate().toLocalDate());
+		employee.setHireDate(
+				LocalDate.parse(updateEmployeeForm.getHireDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 		service.updateEmployee(employee);
 
 		return index(model);

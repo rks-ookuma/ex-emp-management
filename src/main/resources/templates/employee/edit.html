@@ -124,7 +124,7 @@
 				</label>
 				<label class="control-label" style="color: red" for="hireDate"></label>
 				<input type="date" name="hireDate" id="hireDate" class="form-control"
-				 value="2012-11-29" th:value="${#dates.format(updateEmployeeForm.hireDate,'yyyy-MM-dd')}">
+				 th:value="*{hireDate}" value="2012-11-29">
 			</td>
 		  </tr>
 		  <tr>
