@@ -39,7 +39,8 @@
 		<!-- パンくずリスト -->
 		<ol class="breadcrumb">
 			<li><a href="list.html" th:href="@{/employee}">従業員リスト</a></li>
-			<li class="active">従業員詳細</li>
+			<li><a href="edit.html" th:href="@{/employee/toDetail}+'?id='+${updateEmployeeForm.id}">従業員詳細</a></li>
+			<li class="active">従業員の編集</li>
 		</ol>
 		
 		<!-- register form -->
