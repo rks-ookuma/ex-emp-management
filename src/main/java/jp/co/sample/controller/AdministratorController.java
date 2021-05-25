@@ -124,7 +124,6 @@ public class AdministratorController {
 		}
 
 		session.setAttribute("loginAcount", administractor);
-		session.setAttribute("administratorName", administractor.getName());
 
 		return "forward:/employee";
 
@@ -138,6 +137,7 @@ public class AdministratorController {
 	@RequestMapping("/logoutAdmin")
 	public String logoutAdmin() {
 		session.removeAttribute("loginAcount");
+		System.out.println("[fn]logoutAdmin:" + session.getAttribute("loginAcount"));
 		return "forward:/admin";
 	}
 

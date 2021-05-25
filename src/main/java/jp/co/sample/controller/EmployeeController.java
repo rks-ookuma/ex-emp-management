@@ -30,10 +30,25 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService service;
 
+//	@Autowired
+//	private HttpSession session;
+
 	@ModelAttribute
 	public UpdateEmployeeForm setUpUpdateEmployeeForm() {
 		return new UpdateEmployeeForm();
 	}
+
+	// 現在、ログイン情報がセッションに入っていないと右上の管理者名がエラーを出すため、ログインしてなければ従業員一覧等にアクセスできない状態
+
+//	@ModelAttribute
+//	public String checkLogin() {
+//		System.out.println("[Fn]checkLogin");
+//		System.out.println("loginAcount:" + session.getAttribute("loginAcount"));
+//		if (session.getAttribute("loginAcount") == null) {
+//			return "administrator/login";
+//		}
+//		return null;
+//	}
 
 	// TOD: アプリケーションスコープを使わずリクエストスコープを用いる ⇒DBがアプリケーションスコープの代わりになるから
 	// TOD: リクエストスコープにフォームオブジェクトを格納し詳細画面を表示する
@@ -80,7 +95,6 @@ public class EmployeeController {
 	public String toDetail(int id, Model model) {
 		Employee employee = service.getEmployeeById(id);
 		model.addAttribute("employee", employee);
-		System.out.println("[Fn:toDetail]" + employee);
 		return "employee/detail";
 	}
 

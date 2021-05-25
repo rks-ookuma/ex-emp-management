@@ -26,7 +26,7 @@
 						<li class="active"><a href="list.html" th:href="@{/employee}">従業員管理</a></li>
 					</ul>
 					<p class="navbar-text navbar-right">
-						<span th:text="${session.administratorName + 'さん'}">山田さん</span>こんにちは！
+						<a href="adminEdit.html" th:href="@{/admin/toAdminEdit}"><span th:text="${session.loginAcount.name + 'さん'}">山田さん</span></a>こんにちは！
 						&nbsp;&nbsp;&nbsp;
 						<a href="../administrator/login.html" class="navbar-link" th:href="@{/admin/logoutAdmin}">ログアウト</a>
 					</p>
