@@ -72,6 +72,10 @@
 		</tr>
 	</tbody>
 </table>
+<div>
+	<a href="list.html" th:unless="${startIndex==0}" th:href="@{/employee}+'?startIndex='+${startIndex}+'&direction=before'">前へ</a>
+	<a href="list.html" th:if="${hideNext==null}" th:href="@{/employee}+'?startIndex='+${startIndex}+'&direction=next'">次へ</a>
+</div>
 
 
 

@@ -42,13 +42,14 @@ public class EmployeeService {
 	}
 
 	/**
-	 * 10件の従業員のデータを取得する.
+	 * 開始番号の次から指定された件数分の従業員データを取得する.
 	 * 
 	 * @param startIndex 何番目のデータから取得してくるかの最初の前の番号（1番目から取得する場合は、0を入力する）
-	 * @return 開始番号の次のデータから10件分の従業員ドメインのリスト
+	 * @param viewData   取得したいデータの件数
+	 * @return 開始番号からの次から指定された件数分の従業員ドメインのリスト
 	 */
-	public List<Employee> get10Employee(int startIndex) {
-		return repository.find10Data(startIndex);
+	public List<Employee> get10Employee(int startIndex, int viewData) {
+		return repository.find10Data(startIndex, viewData);
 	}
 
 	/**

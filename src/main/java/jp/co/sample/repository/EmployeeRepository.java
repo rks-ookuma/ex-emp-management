@@ -74,15 +74,17 @@ public class EmployeeRepository {
 	}
 
 	/**
-	 * 10件の従業員データを検索する.
+	 * 開始番号の次から指定された件数分の従業員データを検索する.
 	 * 
 	 * @param startIndex 何番目のデータから取得してくるかの最初の前の番号（1番目から取得する場合は、0を入力する）
-	 * @return 指定した開始番号の次から10件分の従業員ドメインのリスト
+	 * @param viewData   取得したいデータの件数
+	 * @return 開始番号からの次から指定された件数分の従業員ドメインのリスト
 	 */
-	public List<Employee> find10Data(int startIndex) {
-		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependens_count "
-				+ " FROM " + TABLE_EMPLOYEES + " LIMIT 10 OFFSET :startIndex ORDER BY hire_date DESC;";
-		SqlParameterSource param = new MapSqlParameterSource().addValue("startIndex", startIndex);
+	public List<Employee> find10Data(int startIndex, int viewData) {
+		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count "
+				+ " FROM " + TABLE_EMPLOYEES + " ORDER BY hire_date DESC LIMIT :viewData OFFSET :startIndex;";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("viewData", viewData).addValue("startIndex",
+				startIndex);
 		List<Employee> employee10DataList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
 
 		return employee10DataList;

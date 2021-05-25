@@ -44,10 +44,28 @@ public class EmployeeController {
 	 * @return 従業員一覧画面
 	 */
 	@RequestMapping("")
-	public String index(Model model) {
+	public String index(Integer startIndex, String direction, Model model) {
 
-		List<Employee> employeeList = service.getAllEmployee();
+		// 従業員リストに表示する件数
+		int viewData = 10;
+
+		if (startIndex == null) {
+			startIndex = 0;
+		} else if (direction.equals("next")) {
+			startIndex += viewData;
+		} else if (direction.equals("before")) {
+			startIndex -= viewData;
+		}
+
+		List<Employee> employeeList = service.get10Employee(startIndex, viewData);
+		model.addAttribute("startIndex", startIndex);
 		model.addAttribute("employeeList", employeeList);
+
+		// DBに登録されている従業員データの限界まで取得していたら
+		if (employeeList.size() < viewData) {
+			model.addAttribute("hideNext", true);
+		}
+
 		return "employee/list";
 	}
 
@@ -107,6 +125,6 @@ public class EmployeeController {
 				LocalDate.parse(updateEmployeeForm.getHireDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 		service.updateEmployee(employee);
 
-		return index(model);
+		return index(0, null, model);
 	}
 }
