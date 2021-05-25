@@ -55,7 +55,7 @@
 
 <!-- ここにモックのform要素を貼り付けます -->
 <form method="post" action="detail.html" th:action="@{/employee/updateEmployeeInfo}" th:object="${updateEmployeeForm}">
-	<input type="hidden" name="id" th:value="*{id}" th:field="*{id}">
+	<input type="hidden" name="id" th:field="*{id}">
 	<fieldset>
 		<legend>従業員情報</legend>
 		<table class="table table-striped">
@@ -68,7 +68,7 @@
 					<span th:errors="*{name}">名前を入力してください</span>
 				</label>
 				<label class="control-label" style="color: red" for="name"></label>
-				<input type="text" name="name" th:value="*{name}" id="name" class="form-control" value="山田花子">
+				<input type="text" name="name" th:field="*{name}" id="name" class="form-control" value="山田花子">
 			</td>
 		  </tr>
 		  <tr>
@@ -113,7 +113,7 @@
 				</label>
 				<label class="control-label" style="color: red" for="hireDate"></label>
 				<input type="date" name="hireDate" id="hireDate" class="form-control"
-				 th:value="*{hireDate}" value="2012-11-29">
+				 th:field="*{hireDate}" value="2012-11-29">
 			</td>
 		  </tr>
 		  <tr>

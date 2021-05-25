@@ -66,6 +66,13 @@ public class EmployeeController {
 		return "employee/detail";
 	}
 
+	/**
+	 * 従業員編集画面を表示させる.
+	 *
+	 * @param id    編集したい従業員のID
+	 * @param model リクエストスコープ
+	 * @return 従業員編集画面
+	 */
 	@RequestMapping("/toEdit")
 	public String toEdit(int id, Model model) {
 		Employee employee = service.getEmployeeById(id);
@@ -73,14 +80,13 @@ public class EmployeeController {
 		BeanUtils.copyProperties(employee, updateEmployeeForm);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		updateEmployeeForm.setHireDate(employee.getHireDate().format(formatter));
-		System.out.println(updateEmployeeForm.getHireDate());
 		model.addAttribute("updateEmployeeForm", updateEmployeeForm);
 
 		return "employee/edit";
 	}
 
 	/**
-	 * 扶養人数を更新する.
+	 * 従業員情報を更新する.
 	 * 
 	 * @param updateEmployeeForm 従業員更新時に使用するフォーム
 	 * @param result             入力値チェックのエラー群
@@ -90,10 +96,8 @@ public class EmployeeController {
 	@RequestMapping("/updateEmployeeInfo")
 	public String updateEmployeeInfo(@Validated UpdateEmployeeForm updateEmployeeForm, BindingResult result,
 			Model model) {
-		System.out.println(updateEmployeeForm);
 
 		if (result.hasErrors()) {
-			System.out.println("[入力値チェック]" + updateEmployeeForm.getHireDate());
 			return "employee/edit";
 		}
 

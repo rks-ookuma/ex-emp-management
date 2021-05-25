@@ -53,7 +53,7 @@
 
 <!-- ここにモックのform要素を貼り付けます -->
 <form method="post" action="detail.html" th:action="@{/admin/updateAdmin}" th:object="${updateAdminForm}">
-    <input type="hidden" name="id" th:value="*{id}">
+    <input type="hidden" name="id" th:field="*{id}">
 	<fieldset>
 		<legend>管理者情報</legend>
 		<table class="table table-striped">
@@ -66,7 +66,7 @@
 					<span th:errors="*{name}">名前を入力してください</span>
 				</label>
 				<label class="control-label" style="color: red" for="name"></label>
-				<input type="text" name="name" th:value="*{name}" id="name" class="form-control" value="山田花子">
+				<input type="text" name="name" th:field="*{name}" id="name" class="form-control" value="山田花子">
 			</td>
 		  </tr>
 		  <tr>
@@ -78,7 +78,7 @@
 					<span th:errors="*{mailAddress}">メールアドレスを入力してください</span>
 				</label>
 				<label class="control-label" style="color: red" for="mailAddress"></label>
-				<input type="text" name="mailAddress" th:value="*{mailAddress}" id="mailAddress" class="form-control" value="yamada@sample.com">
+				<input type="text" name="mailAddress" th:field="*{mailAddress}" id="mailAddress" class="form-control" value="yamada@sample.com">
 			</td>
 		  </tr>
 		  <tr>
@@ -91,7 +91,7 @@
                     <span th:if="${failure}" th:text="${failure}">パスワードが違います</span>
 				</label>
 				<label class="control-label" style="color: red" for="pastPassword"></label>
-				<input type="password" name="pastPassword" th:value="*{pastPassword}" id="pastPassword" class="form-control">
+				<input type="password" name="pastPassword" th:field="*{pastPassword}" id="pastPassword" class="form-control">
 			</td>
 		  </tr>
 		  <tr>
